@@ -1,0 +1,5 @@
+venv
+neural_network.pth
+gui/__pycache__
+recongition_classes/__pycache__
+
