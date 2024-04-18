@@ -1,10 +1,18 @@
 import { mouse, Point, keyboard, Key, Button, screen } from "@nut-tree/nut-js";
-import { app, BrowserWindow, ipcMain, net, protocol } from "electron";
+import {
+    app,
+    BrowserWindow,
+    ipcMain,
+    nativeTheme,
+    net,
+    protocol,
+} from "electron";
 import path from "path";
 import MenuBuilder from "./menu";
 import i18n, { SupportedLanguages } from "../i18n";
 import { EngLetters, RusLetters } from "../renderer/utils/canvasUtils";
 import { store } from "../electronStore";
+import { TicketIcon } from "@heroicons/react/24/solid";
 
 protocol.registerSchemesAsPrivileged([
     {
@@ -28,6 +36,17 @@ if (language !== null) {
 }
 
 export const createMainWindow = () => {
+    const getTitleBarColors = () => {
+        return {
+            color: nativeTheme.shouldUseDarkColors ? "#0a0a0a" : "#f5f5f5",
+            symbolColor: nativeTheme.shouldUseDarkColors ? "#fff" : "#000",
+        };
+    };
+
+    nativeTheme.addListener("updated", () => {
+        mainWindow.setTitleBarOverlay(getTitleBarColors());
+    });
+
     const mainWindow = new BrowserWindow({
         trafficLightPosition: { x: 18, y: 12 },
         height: 600,
@@ -35,7 +54,7 @@ export const createMainWindow = () => {
         width: 900,
         minWidth: 900,
         titleBarStyle: "hidden",
-        titleBarOverlay: { color: "#0a0a0a", symbolColor: "#FFF" },
+        titleBarOverlay: getTitleBarColors(),
         webPreferences: {
             preload: path.join(__dirname, "preload.js"),
         },

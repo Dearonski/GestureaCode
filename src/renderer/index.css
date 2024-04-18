@@ -3,6 +3,10 @@
 @tailwind utilities;
 
 @layer base {
+    :root {
+        @apply dark:bg-neutral-950 bg-neutral-100;
+    }
+
     ::-webkit-scrollbar {
         display: none;
     }
