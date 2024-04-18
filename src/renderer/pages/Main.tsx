@@ -36,7 +36,7 @@ export const Main = () => {
     return (
         <div className="flex items-center gap-x-3 px-3 pb-3 size-full">
             <CameraWithButtons />
-            <div className="hidden md:flex flex-col gap-y-3 overflow-y-auto max-h-full">
+            <div className="hidden md:flex flex-col gap-y-3 overflow-y-auto max-h-full overflow-x-hidden">
                 {gesturesWithActions.map((gesture) => (
                     <CheckBox
                         key={gesture.gesture}

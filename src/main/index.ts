@@ -5,7 +5,6 @@ import MenuBuilder from "./menu";
 import i18n, { SupportedLanguages } from "../i18n";
 import { EngLetters, RusLetters } from "../renderer/utils/canvasUtils";
 import { store } from "../electronStore";
-import { Rule } from "postcss";
 
 protocol.registerSchemesAsPrivileged([
     {
@@ -31,10 +30,12 @@ if (language !== null) {
 export const createMainWindow = () => {
     const mainWindow = new BrowserWindow({
         trafficLightPosition: { x: 18, y: 12 },
+        height: 600,
         minHeight: 600,
         width: 900,
         minWidth: 900,
         titleBarStyle: "hidden",
+        titleBarOverlay: { color: "#0a0a0a", symbolColor: "#FFF" },
         webPreferences: {
             preload: path.join(__dirname, "preload.js"),
         },
@@ -100,7 +101,6 @@ export const createMainWindow = () => {
     ipcMain.on("left-click", async () => {
         await mouse.click(Button.LEFT);
     });
-
     ipcMain.on("right-click", async () => {
         await mouse.click(Button.RIGHT);
     });
@@ -113,27 +113,29 @@ export const createMainWindow = () => {
         );
     });
 
-    mainWindow.addListener("blur", () => {
-        mainWindow.setMinimumSize(360, 250);
-        mainWindow.setResizable(false);
-        mainWindow.setAlwaysOnTop(true);
-        lastSize = mainWindow.getSize();
-        lastPos = mainWindow.getPosition();
-        mainWindow.setSize(360, 200, true);
-        mainWindow.setPosition(1100, 50, true);
-    });
+    mainWindow.setAlwaysOnTop(true);
 
-    mainWindow.addListener("focus", () => {
-        mainWindow.setMinimumSize(800, 600);
-        mainWindow.setResizable(true);
-        // mainWindow.setAlwaysOnTop(false);
-        mainWindow.setSize(
-            lastSize ? lastSize[0] : 800,
-            lastSize ? lastSize[1] : 600,
-            true
-        );
-        lastPos && mainWindow.setPosition(lastPos[0], lastPos[1], true);
-    });
+    // mainWindow.addListener("blur", () => {
+    //     mainWindow.setMinimumSize(360, 250);
+    //     mainWindow.setAlwaysOnTop(true);
+    //     lastSize = mainWindow.getSize();
+    //     lastPos = mainWindow.getPosition();
+    //     mainWindow.setSize(360, 250, true);
+    //     mainWindow.setResizable(false);
+    //     mainWindow.setPosition(1100, 50, true);
+    // });
+
+    // mainWindow.addListener("focus", () => {
+    //     mainWindow.setMinimumSize(800, 600);
+    //     mainWindow.setResizable(true);
+    //     mainWindow.setAlwaysOnTop(false);
+    //     mainWindow.setSize(
+    //         lastSize ? lastSize[0] : 800,
+    //         lastSize ? lastSize[1] : 600,
+    //         true
+    //     );
+    //     lastPos && mainWindow.setPosition(lastPos[0], lastPos[1], true);
+    // });
 
     if (MAIN_WINDOW_VITE_DEV_SERVER_URL) {
         mainWindow.loadURL(MAIN_WINDOW_VITE_DEV_SERVER_URL);
