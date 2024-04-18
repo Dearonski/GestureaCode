@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next";
 import { DetailedHTMLProps, HTMLAttributes } from "react";
-import useCheckboxState from "../hooks/useCheckboxState";
+import useCheckboxStore from "../hooks/useCheckboxStore";
 
 interface CheckBoxProps
     extends DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> {
@@ -15,7 +15,7 @@ const CheckBox: React.FC<CheckBoxProps> = ({
     ...props
 }) => {
     const { t } = useTranslation();
-    const { setGesturesState, gestureState } = useCheckboxState();
+    const { setGesturesState, gestureState } = useCheckboxStore();
 
     const toggleChange = () => {
         setGesturesState(name);

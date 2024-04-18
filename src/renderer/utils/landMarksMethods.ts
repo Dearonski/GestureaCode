@@ -6,15 +6,17 @@ type FingerPosition = {
     y: number;
 };
 
-export class LandMarksMethods {
+class LandMarksMethods {
     results: FingerPosition[];
+    preparedResults: NormalizedLandmarkList;
     labelHand: string | "Right" | "Left";
     fingersIds = [8, 12, 16, 20];
     width: number;
     height: number;
 
     constructor(results: HandLandmarkerResult, width: number, height: number) {
-        this.results = LandMarksMethods.findPosition(
+        this.results = results.landmarks[0];
+        this.preparedResults = LandMarksMethods.findPosition(
             results.landmarks[0],
             width,
             height
@@ -48,45 +50,39 @@ export class LandMarksMethods {
     }
 
     fingersUp() {
-        if (
-            (this.results[4].x > this.results[17].x &&
-                this.labelHand == "Right") ||
-            (this.results[4].x < this.results[17].x && this.labelHand == "Left")
-        ) {
-            if (this.results.length) {
-                const fingers: number[] = [];
-                if (this.results[4].x > this.results[2].x) {
-                    fingers.push(this.labelHand == "Left" ? 0 : 1);
-                } else {
-                    fingers.push(this.labelHand == "Left" ? 1 : 0);
-                }
-                this.fingersIds.map((fingersId) => {
-                    if (
-                        this.results[fingersId].y >
-                        this.results[fingersId - 3].y
-                    ) {
-                        fingers.push(0);
-                    } else {
-                        fingers.push(1);
-                    }
-                });
-                return fingers;
+        if (this.preparedResults.length) {
+            const fingers: number[] = [];
+            if (this.preparedResults[4].x > this.preparedResults[2].x) {
+                fingers.push(this.labelHand == "Left" ? 0 : 1);
+            } else {
+                fingers.push(this.labelHand == "Left" ? 1 : 0);
             }
-        } else {
-            return null;
+            this.fingersIds.map((fingersId) => {
+                if (
+                    this.preparedResults[fingersId].y >
+                    this.preparedResults[fingersId - 3].y
+                ) {
+                    fingers.push(0);
+                } else {
+                    fingers.push(1);
+                }
+            });
+            return fingers;
         }
     }
 
     findDistance(p1: number, p2: number) {
-        if (this.results.length) {
+        if (this.preparedResults.length) {
             return Math.abs(
                 Math.round(
                     Math.hypot(
-                        this.results[p2].x - this.results[p1].x,
-                        this.results[p2].y - this.results[p1].y
+                        this.preparedResults[p2].x - this.preparedResults[p1].x,
+                        this.preparedResults[p2].y - this.preparedResults[p1].y
                     )
                 )
             );
         }
     }
 }
+
+export default LandMarksMethods;

@@ -9,7 +9,7 @@ interface GestureStateStore {
     setGesturesState: (name: string) => void;
 }
 
-const useCheckboxState = create<GestureStateStore>((set) => ({
+const useCheckboxStore = create<GestureStateStore>((set) => ({
     gestureState: {
         movingCursor: true,
         leftClick: true,
@@ -28,4 +28,4 @@ const useCheckboxState = create<GestureStateStore>((set) => ({
         })),
 }));
 
-export default useCheckboxState;
+export default useCheckboxStore;

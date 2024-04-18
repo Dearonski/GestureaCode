@@ -1,10 +1,11 @@
-import { mouse, Point, keyboard, Key, Button } from "@nut-tree/nut-js";
+import { mouse, Point, keyboard, Key, Button, screen } from "@nut-tree/nut-js";
 import { app, BrowserWindow, ipcMain, net, protocol } from "electron";
 import path from "path";
 import MenuBuilder from "./menu";
 import i18n, { SupportedLanguages } from "../i18n";
-import { EngLetters } from "../renderer/hooks/hookUtils";
+import { EngLetters, RusLetters } from "../renderer/utils/canvasUtils";
 import { store } from "../electronStore";
+import { Rule } from "postcss";
 
 protocol.registerSchemesAsPrivileged([
     {
@@ -26,8 +27,7 @@ if (language !== null) {
     i18n.changeLanguage(systemLanguage);
     store.set("language", systemLanguage);
 }
-// "#0a0a0a"
-// "#f5f5f5"
+
 export const createMainWindow = () => {
     const mainWindow = new BrowserWindow({
         trafficLightPosition: { x: 18, y: 12 },
@@ -40,6 +40,9 @@ export const createMainWindow = () => {
         },
     });
 
+    let lastSize = mainWindow.getSize();
+    let lastPos = mainWindow.getPosition();
+
     i18n.on("languageChanged", (language: SupportedLanguages) => {
         menuBuilder.buildMenu();
         store.set("language", language);
@@ -51,27 +54,19 @@ export const createMainWindow = () => {
     });
 
     ipcMain.on("move-mouse", async (event, x: number, y: number) => {
-        await mouse.setPosition(new Point(x, y));
+        await mouse.move([new Point(x, y)]);
     });
 
-    ipcMain.on("input-letter", async (event, numOfLetter: number) => {
-        await keyboard.type(EngLetters[numOfLetter]);
-    });
-
-    ipcMain.on("backspace-press", async () => {
-        await keyboard.pressKey(Key.Backspace);
-        await keyboard.releaseKey(Key.Backspace);
-    });
-
-    ipcMain.on("enter-press", async () => {
-        await keyboard.pressKey(Key.Enter);
-        await keyboard.releaseKey(Key.Enter);
-    });
-
-    ipcMain.on("space-press", async () => {
-        await keyboard.pressKey(Key.Space);
-        await keyboard.releaseKey(Key.Space);
-    });
+    ipcMain.on(
+        "input-letter",
+        async (event, numOfLetter: number, language: "ru" | "en") => {
+            if (language === "en") {
+                await keyboard.type(EngLetters[numOfLetter]);
+            } else {
+                await keyboard.type(RusLetters[numOfLetter]);
+            }
+        }
+    );
 
     ipcMain.on("request-mouse-pos", async (event) => {
         event.reply("response-mouse-pos", await mouse.getPosition());
@@ -110,27 +105,35 @@ export const createMainWindow = () => {
         await mouse.click(Button.RIGHT);
     });
 
-    // mainWindow.addListener("blur", () => {
-    //     mainWindow.setMinimumSize(360, 200);
-    //     mainWindow.setResizable(false);
-    //     mainWindow.setAlwaysOnTop(true);
-    //     lastSize = mainWindow.getSize();
-    //     lastPos = mainWindow.getPosition();
-    //     mainWindow.setSize(360, 200, true);
-    //     mainWindow.setPosition(20, 20, true);
-    // });
+    ipcMain.on("request-screen-size", async (event) => {
+        event.reply(
+            "response-screen-size",
+            await screen.width(),
+            await screen.height()
+        );
+    });
 
-    // mainWindow.addListener("focus", () => {
-    //     mainWindow.setMinimumSize(800, 600);
-    //     mainWindow.setResizable(true);
-    //     mainWindow.setAlwaysOnTop(false);
-    //     mainWindow.setSize(
-    //         lastSize ? lastSize[0] : 800,
-    //         lastSize ? lastSize[1] : 600,
-    //         true
-    //     );
-    //     lastPos && mainWindow.setPosition(lastPos[0], lastPos[1], true);
-    // });
+    mainWindow.addListener("blur", () => {
+        mainWindow.setMinimumSize(360, 250);
+        mainWindow.setResizable(false);
+        mainWindow.setAlwaysOnTop(true);
+        lastSize = mainWindow.getSize();
+        lastPos = mainWindow.getPosition();
+        mainWindow.setSize(360, 200, true);
+        mainWindow.setPosition(1100, 50, true);
+    });
+
+    mainWindow.addListener("focus", () => {
+        mainWindow.setMinimumSize(800, 600);
+        mainWindow.setResizable(true);
+        // mainWindow.setAlwaysOnTop(false);
+        mainWindow.setSize(
+            lastSize ? lastSize[0] : 800,
+            lastSize ? lastSize[1] : 600,
+            true
+        );
+        lastPos && mainWindow.setPosition(lastPos[0], lastPos[1], true);
+    });
 
     if (MAIN_WINDOW_VITE_DEV_SERVER_URL) {
         mainWindow.loadURL(MAIN_WINDOW_VITE_DEV_SERVER_URL);

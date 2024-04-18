@@ -4,7 +4,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useHandLandMarker } from "../hooks/useHandLandMarker";
 import { useRecognize } from "../hooks/useRecognize";
 import { useExecuteGesture } from "../hooks/useExecuteGesture";
-import { LandMarksMethods } from "../utils/Gestures";
+import { LandMarksMethods } from "../utils/landMarksMethods";
 import { SelectCam } from "./SelectCam";
 import { Card } from "./Card";
 import useUserMedia from "../hooks/useUserMedia";

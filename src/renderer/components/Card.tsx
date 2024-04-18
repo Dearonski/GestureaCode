@@ -14,7 +14,7 @@ export const Card: React.FC<CardProps> = ({
     return (
         <div
             className={twMerge(
-                `bg-neutral-300 dark:bg-zinc-900 p-4 rounded-xl border border-neutral-400 dark:border-zinc-800`,
+                `bg-neutral-300 dark:bg-zinc-900 p-3 rounded-2xl border border-neutral-400 dark:border-zinc-800`,
                 className
             )}
             {...props}

@@ -1,13 +1,17 @@
 import { useEffect } from "react";
 import i18n, { SupportedLanguages } from "../../i18n";
+import useInitializeModels from "../hooks/useInitializeModels";
 
 interface LayoutProps {
     children: React.ReactNode;
 }
 
 export const Layout: React.FC<LayoutProps> = ({ children }) => {
+    const initializeModels = useInitializeModels();
+
     useEffect(() => {
         window.electronAPI.requests.requestLanguage();
+        initializeModels();
     }, []);
 
     useEffect(() => {

@@ -7,8 +7,8 @@ export const electronApi = {
     actions: {
         moveMouse: (x: number, y: number) =>
             ipcRenderer.send("move-mouse", x, y),
-        inputLetter: (numOfLetter: number) =>
-            ipcRenderer.send("input-letter", numOfLetter),
+        inputLetter: (numOfLetter: number, language: "ru" | "en") =>
+            ipcRenderer.send("input-letter", numOfLetter, language),
         volumeUp: () => ipcRenderer.send("volume-up"),
         volumeDown: () => ipcRenderer.send("volume-down"),
         nextTrack: () => ipcRenderer.send("next-track"),
@@ -16,9 +16,6 @@ export const electronApi = {
         playTrack: () => ipcRenderer.send("play-track"),
         leftClick: () => ipcRenderer.send("left-click"),
         rightClick: () => ipcRenderer.send("right-click"),
-        backspacePress: () => ipcRenderer.send("backspace-press"),
-        spacePress: () => ipcRenderer.send("space-press"),
-        enterPress: () => ipcRenderer.send("enter-press"),
     },
     responses: {
         responseLanguage: (callback: (language: SupportedLanguages) => void) =>
@@ -32,8 +29,17 @@ export const electronApi = {
                 "response-mouse-pos",
                 (_event: IpcRendererEvent, pos: Point) => callback(pos)
             ),
+        responseScreenSize: (
+            callback: (width: number, height: number) => void
+        ) =>
+            ipcRenderer.on(
+                "response-screen-size",
+                (_event: IpcRendererEvent, width: number, height: number) =>
+                    callback(width, height)
+            ),
     },
     requests: {
+        requestScreenSize: () => ipcRenderer.send("request-screen-size"),
         requestLanguage: () => ipcRenderer.send("request-language"),
         requestMousePos: () => ipcRenderer.send("request-mouse-pos"),
     },

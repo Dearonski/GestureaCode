@@ -8,7 +8,7 @@ import {
     drawHandLandmarks,
     initializeCanvas,
     loadHands,
-} from "./hookUtils";
+} from "../utils/canvasUtils";
 
 export const useHandLandMarker = (
     webcamRunning: boolean,

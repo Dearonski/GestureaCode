@@ -7,7 +7,11 @@ import { twMerge } from "tailwind-merge";
 import useCamera from "../hooks/useCamera";
 import { useTranslation } from "react-i18next";
 
-const SelectCam = () => {
+interface SelectCameraProps {
+    className?: string;
+}
+
+const SelectCam: React.FC<SelectCameraProps> = ({ className }) => {
     const [videoInputs, setVideoInputs] = useState<MediaDeviceInfo[]>();
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const { setIsLoading, isActive } = useCamera();
@@ -41,7 +45,7 @@ const SelectCam = () => {
     }, [setVideoInputs]);
 
     return (
-        <div className="flex-shrink-0 h-full relative">
+        <div className={twMerge(`flex-shrink-0 h-full relative`, className)}>
             <AnimatePresence>
                 {isOpen && (
                     <motion.div
@@ -84,7 +88,7 @@ const SelectCam = () => {
             >
                 <VideoCameraIcon className="text-white size-8" />
                 <p className="font-medium">
-                    {videoInput ? videoInput.label.split("(", 1) : "Бебра"}
+                    {videoInput ? videoInput.label.split("(", 1) : "Loading..."}
                 </p>
                 <ChevronDownIcon
                     className={twMerge(

@@ -16,9 +16,7 @@ export type Gestures =
     | "Play/Pause"
     | "Left Click"
     | "Right Click"
-    | "Space"
-    | "Enter"
-    | "Backspace"
+    | "ChangeLanguage"
     | "None Gesture";
 
 export const loadHands = async () => {
@@ -36,34 +34,6 @@ export const loadHands = async () => {
     });
 
     return hands;
-};
-
-export const initializeCanvas = (
-    videoCanvas: HTMLCanvasElement,
-    drawingCanvas: HTMLCanvasElement,
-    width: number,
-    height: number
-) => {
-    videoCanvas.width = width;
-    videoCanvas.height = height;
-    drawingCanvas.width = width;
-    drawingCanvas.height = height;
-
-    const videoCtx = videoCanvas.getContext("2d", {
-        desynchronized: true,
-    }) as CanvasRenderingContext2D;
-    const drawingCtx = drawingCanvas.getContext("2d", {
-        willReadFrequently: true,
-    }) as CanvasRenderingContext2D;
-
-    drawingCtx.setTransform(-1, 0, 0, 1, width, 0);
-    drawingCtx.lineWidth = 25;
-    drawingCtx.strokeStyle = "#4f46e5";
-    drawingCtx.lineJoin = "round";
-
-    videoCtx.setTransform(-1, 0, 0, 1, width, 0);
-
-    return { drawingCtx, videoCtx };
 };
 
 export const clearCanvas = (

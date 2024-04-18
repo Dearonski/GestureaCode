@@ -1,26 +1,23 @@
 import useCamera from "../hooks/useCamera";
 import useUserMedia from "../hooks/useUserMedia";
 import { useEffect, useRef } from "react";
-
-let lastVideoTime = -1;
+import useDrawCanvas from "../hooks/useDrawCanvas";
 
 const Camera = () => {
-    const mediaStream = useUserMedia();
     const videoRef = useRef<HTMLVideoElement>();
-    const videoCanvasRef = useRef<HTMLCanvasElement>(null);
+    const canvasRef = useRef<HTMLCanvasElement>(null);
+    const drawingCanvasRef = useRef<HTMLCanvasElement>(null);
+    const { drawCanvas, initializeCanvas } = useDrawCanvas(
+        videoRef.current,
+        canvasRef.current,
+        drawingCanvasRef.current
+    );
     const { setIsLoading } = useCamera();
-    // const drawingCanvasRef = useRef<HTMLCanvasElement>(null);
-    const videoCanvasCtx = useRef<CanvasRenderingContext2D>(null);
+    const mediaStream = useUserMedia();
 
     useEffect(() => {
         setIsLoading(true);
     }, []);
-
-    useEffect(() => {
-        if (videoCanvasRef.current) {
-            videoCanvasCtx.current = videoCanvasRef.current.getContext("2d");
-        }
-    }, [videoRef.current]);
 
     useEffect(() => {
         if (mediaStream && videoRef.current) {
@@ -28,21 +25,9 @@ const Camera = () => {
         }
     }, [mediaStream]);
 
-    const drawCanvas = async () => {
-        if (
-            videoRef.current &&
-            lastVideoTime !== videoRef.current.currentTime
-        ) {
-            lastVideoTime = videoRef.current.currentTime;
-            videoCanvasCtx.current.drawImage(videoRef.current, 0, 0);
-        }
-        requestAnimationFrame(drawCanvas);
-    };
-
     const handleCanPlay = () => {
         videoRef.current.play();
-        videoCanvasRef.current.width = videoRef.current.videoWidth;
-        videoCanvasRef.current.height = videoRef.current.videoHeight;
+        initializeCanvas();
         drawCanvas();
         setIsLoading(false);
     };
@@ -58,13 +43,13 @@ const Camera = () => {
                 className="size-full rotate-y-180 absolute z-10 object-fill blur-[256px]"
             />
             <canvas
-                ref={videoCanvasRef}
-                className="pointer-events-none h-full max-w-full w-auto object-contain absolute z-20 rotate-y-180"
+                ref={canvasRef}
+                className="pointer-events-none h-full max-w-full w-auto object-contain absolute z-20"
             />
-            {/* <canvas
+            <canvas
                 ref={drawingCanvasRef}
                 className="pointer-events-none h-full max-w-full w-auto object-contain absolute z-20"
-            /> */}
+            />
         </div>
     );
 };

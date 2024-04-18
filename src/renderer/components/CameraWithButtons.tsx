@@ -12,11 +12,11 @@ const CameraWithButtons = () => {
     const { t } = useTranslation();
 
     return (
-        <Card className="size-full flex flex-col items-center gap-y-3">
+        <Card className="size-full flex flex-col items-center gap-y-3 p-0 md:p-3">
             <CameraOverlay />
-            <div className="flex gap-x-3 w-full">
+            <div className="hidden md:flex gap-x-3 w-full ">
                 <Button
-                    className="text-lg font-medium w-full"
+                    className="text-lg font-medium w-full h-full"
                     disabled={isLoading}
                     onClick={() => {
                         setIsActive(!isActive);
@@ -45,14 +45,14 @@ const CameraWithButtons = () => {
                                 )}
                             ></div>
                         </motion.div>
-                        <span className="w-fit">
+                        <span className="w-fit hidden md:block">
                             {isActive
                                 ? t("Turn off camera")
                                 : t("Turn on camera")}
                         </span>
                     </div>
                 </Button>
-                <SelectCam />
+                <SelectCam className="hidden md:block" />
             </div>
         </Card>
     );
