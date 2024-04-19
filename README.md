@@ -22,6 +22,6 @@
 
 📫 Authors:
 
-Shikhanov Kirill: ![Static Badge](https://img.shields.io/badge/Telegram-black?logo=Telegram&link=https%3A%2F%2Ft.me%2Jimmysonss)
+Shikhanov Kirill: ![Static Badge](https://img.shields.io/badge/Telegram-black?logo=Telegram&link=https://t.me/Jimmysonss)
 
 Grechanikov Nikita: ![Static Badge](https://img.shields.io/badge/Telegram-black?logo=Telegram&link=https%3A%2F%2Ft.me%2Ffrznfrg) 
