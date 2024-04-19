@@ -7,13 +7,13 @@
 </p>
 
 🤌 List of supported gestures:
-- Moving a cursor:
-- Left mouse button click:
-- Right mouse button click:
-- Setting a volume level:
-- Pausing the track:
-- Previous track:
-- Next track:
+- Moving a cursor: index and middle fingers are raised, others are pinned down. Move your palm like on a trackpad.
+- Left mouse button click: сonnect your thumb with the index finger
+- Right mouse button click: сonnect your thumb with the middle index
+- Setting a volume level: move the 🤟 up and down to increase or decrease the volume level
+- Pausing the track: connect your thumb with the pinkie
+- Previous track: connect your thumb with the ring finger
+- Next track: connect your thumb with the middle finger
 
 
 👀 See also:
