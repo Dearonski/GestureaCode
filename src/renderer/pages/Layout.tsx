@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import i18n, { SupportedLanguages } from "../../i18n";
 import useInitializeModels from "../hooks/useInitializeModels";
+import Header from "../components/Header";
 
 interface LayoutProps {
     children: React.ReactNode;
@@ -30,7 +31,7 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
 
     return (
         <div className="flex flex-col dark:bg-neutral-950 bg-neutral-100 overflow-y-hidden h-screen">
-            <header className="h-10 titleBar"></header>
+            <Header />
             <main className="h-[calc(100vh-40px)]">{children}</main>
         </div>
     );

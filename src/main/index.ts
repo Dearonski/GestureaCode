@@ -12,7 +12,6 @@ import MenuBuilder from "./menu";
 import i18n, { SupportedLanguages } from "../i18n";
 import { EngLetters, RusLetters } from "../renderer/utils/canvasUtils";
 import { store } from "../electronStore";
-import { TicketIcon } from "@heroicons/react/24/solid";
 
 protocol.registerSchemesAsPrivileged([
     {
@@ -71,6 +70,10 @@ export const createMainWindow = () => {
 
     ipcMain.on("request-language", (event) => {
         event.reply("response-language", i18n.language);
+    });
+
+    ipcMain.on("request-platform", (event) => {
+        event.reply("response-platform", process.platform);
     });
 
     ipcMain.on("move-mouse", async (event, x: number, y: number) => {
@@ -134,27 +137,27 @@ export const createMainWindow = () => {
 
     mainWindow.setAlwaysOnTop(true);
 
-    // mainWindow.addListener("blur", () => {
-    //     mainWindow.setMinimumSize(360, 250);
-    //     mainWindow.setAlwaysOnTop(true);
-    //     lastSize = mainWindow.getSize();
-    //     lastPos = mainWindow.getPosition();
-    //     mainWindow.setSize(360, 250, true);
-    //     mainWindow.setResizable(false);
-    //     mainWindow.setPosition(1100, 50, true);
-    // });
+    mainWindow.addListener("blur", () => {
+        mainWindow.setMinimumSize(360, 250);
+        mainWindow.setAlwaysOnTop(true);
+        lastSize = mainWindow.getSize();
+        lastPos = mainWindow.getPosition();
+        mainWindow.setSize(360, 250, true);
+        mainWindow.setResizable(false);
+        mainWindow.setPosition(1100, 50, true);
+    });
 
-    // mainWindow.addListener("focus", () => {
-    //     mainWindow.setMinimumSize(800, 600);
-    //     mainWindow.setResizable(true);
-    //     mainWindow.setAlwaysOnTop(false);
-    //     mainWindow.setSize(
-    //         lastSize ? lastSize[0] : 800,
-    //         lastSize ? lastSize[1] : 600,
-    //         true
-    //     );
-    //     lastPos && mainWindow.setPosition(lastPos[0], lastPos[1], true);
-    // });
+    mainWindow.addListener("focus", () => {
+        mainWindow.setMinimumSize(800, 600);
+        mainWindow.setResizable(true);
+        // mainWindow.setAlwaysOnTop(false);
+        mainWindow.setSize(
+            lastSize ? lastSize[0] : 800,
+            lastSize ? lastSize[1] : 600,
+            true
+        );
+        lastPos && mainWindow.setPosition(lastPos[0], lastPos[1], true);
+    });
 
     if (MAIN_WINDOW_VITE_DEV_SERVER_URL) {
         mainWindow.loadURL(MAIN_WINDOW_VITE_DEV_SERVER_URL);

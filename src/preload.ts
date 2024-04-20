@@ -37,11 +37,18 @@ export const electronApi = {
                 (_event: IpcRendererEvent, width: number, height: number) =>
                     callback(width, height)
             ),
+        responsePlatform: (callback: (platform: NodeJS.Platform) => void) =>
+            ipcRenderer.once(
+                "response-platform",
+                (_event: IpcRendererEvent, platform: NodeJS.Platform) =>
+                    callback(platform)
+            ),
     },
     requests: {
         requestScreenSize: () => ipcRenderer.send("request-screen-size"),
         requestLanguage: () => ipcRenderer.send("request-language"),
         requestMousePos: () => ipcRenderer.send("request-mouse-pos"),
+        requestPlatform: () => ipcRenderer.send("request-platform"),
     },
     onUpdateLanguage: (callback: (language: SupportedLanguages) => void) => {
         ipcRenderer.on(
