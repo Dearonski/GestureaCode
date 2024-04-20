@@ -16,6 +16,7 @@ export const electronApi = {
         playTrack: () => ipcRenderer.send("play-track"),
         leftClick: () => ipcRenderer.send("left-click"),
         rightClick: () => ipcRenderer.send("right-click"),
+        openDeveloperTools: () => ipcRenderer.send("open-dev-tools"),
     },
     responses: {
         responseLanguage: (callback: (language: SupportedLanguages) => void) =>

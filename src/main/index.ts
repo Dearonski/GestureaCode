@@ -106,6 +106,10 @@ export const createMainWindow = () => {
         await keyboard.releaseKey(Key.AudioNext);
     });
 
+    ipcMain.on("open-dev-tools", () => {
+        mainWindow.webContents.openDevTools();
+    });
+
     ipcMain.on("previous-track", async () => {
         await keyboard.pressKey(Key.AudioPrev);
         await keyboard.releaseKey(Key.AudioPrev);
@@ -140,7 +144,7 @@ export const createMainWindow = () => {
         lastPos = mainWindow.getPosition();
         mainWindow.setSize(360, 250, true);
         mainWindow.setResizable(false);
-        mainWindow.setPosition(1100, 50, true);
+        mainWindow.setPosition(50, 50, true);
     });
 
     mainWindow.addListener("focus", () => {

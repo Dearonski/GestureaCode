@@ -21,7 +21,13 @@ const Header = () => {
                             <button className="text-left w-full text-nowrap">
                                 {t("Toggle Full Screen")}
                             </button>
-                            <button className="text-left w-full text-nowrap">
+                            <button
+                                className="text-left w-full text-nowrap"
+                                onClick={() => {
+                                    window.electronAPI.actions.openDeveloperTools();
+                                    setOpened("");
+                                }}
+                            >
                                 Toggle Developer Tools
                             </button>
                         </div>
