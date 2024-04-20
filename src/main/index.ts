@@ -72,10 +72,6 @@ export const createMainWindow = () => {
         event.reply("response-language", i18n.language);
     });
 
-    ipcMain.on("request-platform", (event) => {
-        event.reply("response-platform", process.platform);
-    });
-
     ipcMain.on("move-mouse", async (event, x: number, y: number) => {
         await mouse.move([new Point(x, y)]);
     });
@@ -148,8 +144,8 @@ export const createMainWindow = () => {
     });
 
     mainWindow.addListener("focus", () => {
-        mainWindow.setMinimumSize(800, 600);
         mainWindow.setResizable(true);
+        mainWindow.setMinimumSize(800, 600);
         // mainWindow.setAlwaysOnTop(false);
         mainWindow.setSize(
             lastSize ? lastSize[0] : 800,

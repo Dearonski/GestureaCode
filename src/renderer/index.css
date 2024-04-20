@@ -11,6 +11,10 @@
         display: none;
     }
 
+    .no-drag {
+        -webkit-app-region: no-drag;
+    }
+
     header {
         -webkit-app-region: drag;
     }

@@ -10,7 +10,7 @@ const CameraOverlay = () => {
             <AnimatePresence>
                 {(!isActive || isLoading) && (
                     <motion.div
-                        className="size-full absolute z-50"
+                        className="size-full absolute z-40"
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
