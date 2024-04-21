@@ -242,8 +242,7 @@ export const useExecuteGesture = () => {
                 window.electronAPI.actions.inputLetter(
                     results.findIndex((el) => el === Math.max(...results)),
                     "en"
-                );
-                console.log("bebra");
+                )
             } else {
                 feeds[letterClassificationModelRu.inputNames[0]] = inputTensor;
                 const resultsData: Record<string, Tensor> =

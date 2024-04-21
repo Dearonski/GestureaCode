@@ -31,7 +31,6 @@ const useDrawCanvas = (
 
     useEffect(() => {
         setGesture(gestureRef.current);
-        console.log(gestureRef.current);
     }, [debouncedValue]);
 
     const drawCanvas = () => {

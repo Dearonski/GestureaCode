@@ -130,7 +130,7 @@ export enum EngLetters {
 }
 
 export enum RusLetters {
-    а,
+    a,
     б,
     в,
     г,

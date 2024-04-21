@@ -1,4 +1,12 @@
-import { mouse, Point, keyboard, Key, Button, screen } from "@nut-tree/nut-js";
+import {
+    mouse,
+    Point,
+    keyboard,
+    Key,
+    Button,
+    screen,
+    clipboard,
+} from "@nut-tree/nut-js";
 import {
     app,
     BrowserWindow,
@@ -63,6 +71,7 @@ export const createMainWindow = () => {
     let lastPos = mainWindow.getPosition();
 
     i18n.on("languageChanged", (language: SupportedLanguages) => {
+        a;
         menuBuilder.buildMenu();
         store.set("language", language);
         mainWindow.webContents.send("update-language", language);
@@ -75,14 +84,14 @@ export const createMainWindow = () => {
     ipcMain.on("move-mouse", async (event, x: number, y: number) => {
         await mouse.move([new Point(x, y)]);
     });
-
     ipcMain.on(
         "input-letter",
         async (event, numOfLetter: number, language: "ru" | "en") => {
             if (language === "en") {
                 await keyboard.type(EngLetters[numOfLetter]);
             } else {
-                await keyboard.type(RusLetters[numOfLetter]);
+                await clipboard.setContent(`${RusLetters[numOfLetter]}`);
+                await keyboard.type(Key.LeftControl, Key.V);
             }
         }
     );
